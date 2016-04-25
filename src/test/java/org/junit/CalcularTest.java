@@ -1,10 +1,13 @@
-package logica;
+//package logica;
+package org.junit;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
+
+import logica.Calcular;
 
 public class CalcularTest {
 

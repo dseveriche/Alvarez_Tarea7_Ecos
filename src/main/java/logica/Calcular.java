@@ -1,5 +1,6 @@
 package logica;
 
+import java.text.DecimalFormat;
 import java.util.*;
 /**
 * Nombre: Daniel m Alvarez                                                                       
@@ -21,29 +22,30 @@ public class Calcular {
 	 * @param recive un dato tipo double y un dato i double
 	 * @return retorna un arrayList
 	 */
+	DecimalFormat df = new DecimalFormat("0.00000");
 	public ArrayList<Double> Xi( double dato, double i){
 		ArrayList<Double> resultado = new ArrayList<Double>();
 		resultado.add(0.0);
-		
+
 		for( int x = 1; x <= i; x++)
 			resultado.add( resultado.get(x - 1)  + ( dato / i));
-		
+
 		return resultado;
 	}
-	
+
 	/**
 	 * Metodo UnoMasX2SobreDof
 	 * @param recive un dato tipo double y un dato i double y un dato dof tipo double
 	 * @return retorna un arrayList
 	 */
 	public ArrayList<Double> UnoMasX2SobreDof( double dato, double i, double dof){
-		
+
 		ArrayList<Double> valorXi = Xi( dato, i);
-				
+
 		ArrayList<Double> resultado = new ArrayList<Double>();
 		for( double x: valorXi)
 			resultado.add( 1 + ((x * x) / dof));
-		
+
 		return resultado;
 	}
 	/**
@@ -52,7 +54,7 @@ public class Calcular {
 	 * @return retorna un double 
 	 */
 	public double NegativoDofMasUnoSobreDos( double dof, double i){
-		
+
 		return ( -1 * (( dof + 1) / 2));
 	}
 	/**
@@ -61,27 +63,27 @@ public class Calcular {
 	 * @return retorna un arraylist
 	 */
 	public ArrayList<Double> ListaPotenciacion( double dato, double i, double dof){
-		
+
 		ArrayList<Double> valorUnoMasX2SobreDof = UnoMasX2SobreDof( dato, i, dof);
 		double potencia = NegativoDofMasUnoSobreDos( dof, i);
-		
+
 		ArrayList<Double> resultado = new ArrayList<Double>();
-		
+
 		for( double x: valorUnoMasX2SobreDof)
 			resultado.add( Math.pow(x, potencia));
-		
+
 		return resultado;
 	}
-	
+
 	/**
 	 * Metodo LogGamma
 	 * @param recive un dato X tipo double 
 	 * @return retorna un double 
 	 */
 	public double LogGamma( double x){
-	      double tmp = (x - 0.5) * Math.log(x + 4.5) - (x + 4.5);
-	      double ser = 1.0 + 76.18009173 / (x + 0) - 86.50532033 / (x + 1) + 24.01409822 / (x + 2) - 1.231739516 / (x + 3) + 0.00120858003 / (x + 4) - 0.00000536382 / (x + 5);
-	      return tmp + Math.log(ser * Math.sqrt(2 * Math.PI));
+		double tmp = (x - 0.5) * Math.log(x + 4.5) - (x + 4.5);
+		double ser = 1.0 + 76.18009173 / (x + 0) - 86.50532033 / (x + 1) + 24.01409822 / (x + 2) - 1.231739516 / (x + 3) + 0.00120858003 / (x + 4) - 0.00000536382 / (x + 5);
+		return tmp + Math.log(ser * Math.sqrt(2 * Math.PI));
 	}
 	/**
 	 * Metodo Gamma
@@ -97,7 +99,7 @@ public class Calcular {
 	 * @return retorna un double 
 	 */
 	public double GammaDofMasUnoSobreDos( double dof){
-		
+
 		return Gamma((( dof + 1) / 2));
 	}
 	/**
@@ -131,14 +133,14 @@ public class Calcular {
 	 * @return retorna un arraylist 
 	 */
 	public ArrayList<Double> FXi( double dato, double i, double dof){
-		
+
 		ArrayList<Double> valorListaPotenciacion = ListaPotenciacion( dato, i, dof);
 		double valorGammaDofSobreDosSobreDofPorPiElevadoUnoymedioPorGammaDofSobreDos = GammaDofSobreDosSobreDofPorPiElevadoUnoymedioPorGammaDofSobreDos( dof);
-		
+
 		ArrayList<Double> resultado = new ArrayList<Double>();
 		for( double x: valorListaPotenciacion)
-				resultado.add( x * valorGammaDofSobreDosSobreDofPorPiElevadoUnoymedioPorGammaDofSobreDos);			
-				
+			resultado.add( x * valorGammaDofSobreDosSobreDofPorPiElevadoUnoymedioPorGammaDofSobreDos);			
+
 		return resultado;
 	}
 	/**
@@ -158,16 +160,16 @@ public class Calcular {
 	public ArrayList<Double> Terms( double dato, double i, double dof, double[] multiplier){
 		double valorW = w( dato, i);
 		ArrayList<Double> valorFxi = FXi( dato, i, dof);
-		
+
 		ArrayList<Double> resultado = new ArrayList<Double>();
-			
+
 		int selectMultiplier = 0;	
 		for( int x = 0; x < valorFxi.size(); x++)
 			resultado.add( (w( dato, i) / 3) * multiplier[x] * valorFxi.get(x));
 		return resultado;
 	}
 	/**
-	 * Metodo  Terms
+	 * Metodo  resultadoFinal
 	 * @param recive un dato tipo double y un dato i double y un dato dof tipo double una dato doble multiplier
 	 * @return retorna un double
 	 */
@@ -177,5 +179,35 @@ public class Calcular {
 			resultado += x;
 		return resultado;
 	}
-	
+
+	public Double getSumatoriaList (List<Double> listSum){
+		double suma = 0;
+
+		for (int i = 0; i < listSum.size(); i++) {
+			suma = suma + listSum.get(i);
+		}
+
+		return suma;
+	}
+
+	public Double calcFirstPartEqua(double dof) {
+		double numFP;
+		double demFPOne;
+		double demFPGam;
+		double resultFP;
+
+		numFP = Gamma((dof + 1) / 2);
+		demFPOne = Math.pow((dof * Math.PI), 0.5);
+		demFPGam = Gamma(dof / 2);
+
+		resultFP = (numFP/(demFPOne * demFPGam));
+		return resultFP;
+	}
+
+	public Double calcSingleTerms(double incremX, double multipli, Double elemFsubX) {
+		double singleTerm=0;
+
+		singleTerm = (incremX / 3) * (multipli) * (elemFsubX);
+		return singleTerm;
+	}
 }
