@@ -1,7 +1,7 @@
 Version 1 Tarea5 Daniel 
 copiar en el box la ruta del proyecto del que desea contar los LOC
 
-ruta Github  https://github.com/dseveriche/Alvarez_Tarea5_Ecos.git
+ruta Github  https://github.com/dseveriche/Alvarez_Tarea6_Ecos.git
 
 
 estructura maven
@@ -12,7 +12,8 @@ estructura maven
 ||||___	ecos.tamanorelativo
 |||||___	MAin.java
 ||||___	logica
-|||||___	Calcular.java
+|||||___	Calcular.java
+|||||___	Calculardistribucion.java
 ||___	test
 |||___	java
 ||||___	logica
@@ -30,7 +31,8 @@ usar el archivo
 
 
 heroku link
-https://radiant-taiga-96276.herokuapp.com/tamanorelativo
+https://fast-tor-30739.herokuapp.com/ | https://git.heroku.com/fast-tor-30739.git
+https://fast-tor-30739.herokuapp.com/Distribucion
 
 
 
